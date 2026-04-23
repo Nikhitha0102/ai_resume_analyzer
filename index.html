@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Resume Analyzer</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            text-align: center;
+        }
+
+        .container {
+            background: white;
+            width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        button {
+            background: blue;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .box {
+            background: #eef;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+
+        .progress {
+            background: #ddd;
+            border-radius: 20px;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: green;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>AI Resume Analyzer</h2>
+
+    <!-- 🔥 NEW DROPDOWN -->
+    <select id="jobRole">
+        <option value="data_analyst">Data Analyst</option>
+        <option value="software_engineer">Software Engineer</option>
+        <option value="ml_engineer">ML Engineer</option>
+        <option value="web_developer">Web Developer</option>
+    </select>
+
+    <br><br>
+
+    <input type="file" id="fileInput"><br><br>
+
+    <button onclick="uploadFile()">Analyze Resume</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+function uploadFile() {
+    const file = document.getElementById("fileInput").files[0];
+    const jobRole = document.getElementById("jobRole").value;
+
+    if (!file) {
+        alert("Upload resume");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("job_role", jobRole);
+
+    fetch("http://127.0.0.1:5000/upload", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("result").innerHTML = `
+            <div class="box">Job Role: ${data.selected_job}</div>
+            <div class="box">Score: ${data.score}</div>
+
+            <div class="progress">
+                <div class="progress-bar" style="width:${data.job_match}%">
+                    ${data.job_match}%
+                </div>
+            </div>
+
+            <div class="box">Matched Skills: ${data.matched_skills}</div>
+            <div class="box">All Skills: ${data.skills}</div>
+            <div class="box">Suggestions: ${data.suggestions}</div>
+        `;
+    });
+}
+</script>
+
+</body>
+</html>
