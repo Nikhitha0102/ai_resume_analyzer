@@ -167,7 +167,7 @@ Step 4: Open Frontend
 
 👩‍💻 Author
 
-Manjula Jadav
+Kethavath Nikhitha
 📍 Hyderabad, India
 📧 pkethavath31@gmail.com
 🔗 GitHub: https://github.com/Nikhitha0102
